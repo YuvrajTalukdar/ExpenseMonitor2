@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Expense Monitor</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- Menu item strings -->
+    <string name="expense_list_item">Expenses</string>
+    <string name="category_item">Spending Categories</string>
+    <string name="report_item">Expense Report</string>
+    <string name="sync_item">Cloud Sync &amp; Local Backup</string>
+    <string name="about_item">About</string>
+    <string name="theme_layout_heading_text">Themes</string>
+    <!--drawer strings-->
+    <string name="drawer_header_text_view">Sign In</string>
+    <string name="close">close</string>
+    <string name="open">open</string>
+    <!--sync fragment strings-->
+    <string name="Online_Backup">Online Backup</string>
+    <string name="Offline_Backup">Offline Backup</string>
+    <string name="Perform_Local_Backup">Perform Local Backup</string>
+    <string name="Load_Backup_File">Load Backup File</string>
+    <string name="sign_in_google">Sign In with Google</string>
+    <string name="sync_button_text">Sync Now</string>
+    <string name="syncing">Syncing…</string>
+    <string name="AutoSync">Auto Sync</string>
+    <string name="sign_in_button_text">Sign In with Google</string>
+    <string name="sign_out_button_text">Sign Out</string>
+    <string name="not_signed_in">Not signed in.</string>
+
+</resources>

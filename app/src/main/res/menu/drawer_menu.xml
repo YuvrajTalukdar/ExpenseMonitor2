@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <item
+            android:id="@+id/expense_list_item"
+            android:icon="@drawable/expense_list_icon"
+            android:title="@string/expense_list_item" />
+        <item
+            android:id="@+id/category_item"
+            android:icon="@drawable/category_icon"
+            android:title="@string/category_item" />
+        <item
+            android:id="@+id/report_item"
+            android:icon="@drawable/report_icon"
+            android:title="@string/report_item" />
+        <item
+            android:id="@+id/backup_item"
+            android:icon="@drawable/sync_icon"
+            android:title="@string/sync_item" />
+        <item
+            android:id="@+id/about_item"
+            android:icon="@drawable/about_icon"
+            android:title="@string/about_item" />
+    </group>
+
+    <item android:title="Themes">
+        <menu>
+            <item android:id="@+id/theme_menu_item"
+                android:title=""
+                app:showAsAction="always"
+                app:actionLayout="@layout/theme_menu_item_layout"/>
+        </menu>
+    </item>
+
+</menu>

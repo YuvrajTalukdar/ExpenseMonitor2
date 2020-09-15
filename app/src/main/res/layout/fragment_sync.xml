@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|top"
+    android:weightSum="6"
+    android:paddingTop="?android:attr/actionBarSize"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Online_Backup"
+        android:textColor="?attr/DeepColor"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:textSize="30sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/account_name_TextView"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/textview_style"
+            android:text=""
+            android:textAlignment="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="?attr/MediumColor"
+            android:textSize="24sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_weight="1"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:weightSum="2"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/Sign_In_With_Google_Account"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button_style"
+            android:text="@string/sign_in_google"
+            android:layout_marginEnd="5dp"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/sync_now_button"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/button_style"
+            android:text="@string/sync_button_text"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/Auto_sync_switch"
+        android:layout_width="129dp"
+        android:layout_height="40dp"
+        android:layoutDirection="ltr"
+        android:text="@string/AutoSync"
+        android:textColor="?attr/DeepColor"
+        android:theme="@style/SwitchStyle"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="50dp"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Offline_Backup"
+        android:textColor="?attr/DeepColor"
+        android:textSize="30sp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:gravity="center">
+        <Button
+            android:id="@+id/Perform_Local_Backup"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button_style"
+            android:text="@string/Perform_Local_Backup"
+            android:layout_marginEnd="5dp"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/Load_Backup_file"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:background="@drawable/button_style"
+            android:text="@string/Load_Backup_File"
+            android:layout_marginStart="5dp"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
