@@ -1,4 +1,19 @@
 <resources>
+    <!-- This dummy theme is required for using the materialDialog box-->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#d81b60</item>
+        <item name="rippleColor">#ad1457</item>
+    </style>
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#757575</item>
+        <item name="rippleColor">#a4a4a4</item>
+    </style>
+
     <!--  Application dark theme, green scheme. -->
     <style name="DarkGreenTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Basic dark theme here. -->
@@ -18,11 +33,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkGreenTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!--  Application dark theme, red scheme. -->
     <style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -43,11 +59,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkRedTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!--  Application dark theme, grey scheme. -->
     <style name="DarkGreyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -68,11 +85,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkGreyTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!--  Application dark theme, blue scheme. -->
     <style name="DarkBlueTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -93,11 +111,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkBlueTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!--  Application dark theme, violet scheme. -->
     <style name="DarkVioletTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -118,11 +137,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkVioletTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!--  Application dark theme, pink scheme. -->
     <style name="DarkPinkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -143,11 +163,12 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="android:textAppearanceLargePopupMenu">@style/myPopupMenuTextAppearanceLarge</item>
         <item name="android:textAppearanceSmallPopupMenu">@style/myPopupMenuTextAppearanceSmall</item>
+        <!-- Other settings -->
+        <item name="android:fitsSystemWindows">false</item>
     </style>
     <style name="DarkPinkTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:fitsSystemWindows">true</item>
     </style>
 
 

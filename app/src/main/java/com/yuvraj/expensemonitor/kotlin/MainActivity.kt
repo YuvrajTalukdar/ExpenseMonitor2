@@ -19,13 +19,15 @@ import com.google.android.material.navigation.NavigationView
 import com.yuvraj.expensemonitor.R
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+                                          add_category_dialog.add_category_listener{
 
     private lateinit var drawer_layout : DrawerLayout
     private lateinit var fragmentManager: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.DarkGreenTheme_NoActionBar)
         setContentView(R.layout.activity_main)
 
         //main activity elements
@@ -39,7 +41,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //for drawer action bar
         drawer_layout = findViewById(R.id.drawer_layout)
-        var action_bar_toggle: ActionBarDrawerToggle = ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.open,R.string.close)
+        var action_bar_toggle: ActionBarDrawerToggle = ActionBarDrawerToggle(
+            this,
+            drawer_layout,
+            toolbar,
+            R.string.open,
+            R.string.close
+        )
         drawer_layout.addDrawerListener(action_bar_toggle)
         action_bar_toggle.isDrawerIndicatorEnabled = true
         action_bar_toggle.syncState()
@@ -63,11 +71,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var medium_color = String.format("#%06X", 0xFFFFFF and map["MediumColor"]!!)
         map.clear()
         fragmentManager=supportFragmentManager
-        fragmentManager.beginTransaction().replace(R.id.container_fragment,ExpensesFragment(),"expense_fragment").commit()
-        supportActionBar?.title = HtmlCompat.fromHtml("<font color="+medium_color+">" + resources.getString(R.string.expense_list_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
+        fragmentManager.beginTransaction().replace(
+            R.id.container_fragment,
+            ExpensesFragment(),
+            "expense_fragment"
+        ).commit()
+        supportActionBar?.title = HtmlCompat.fromHtml(
+            "<font color=" + medium_color + ">" + resources.getString(
+                R.string.expense_list_item
+            ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
     }
 
-    private fun get_color_id(): HashMap<String, Int>
+    override fun onDialogOKClicked(dialog_code: Int, category_name: String) {
+        if(dialog_code==0)//adding new category
+        {
+            var category_fragment: CategoryFragment = supportFragmentManager.findFragmentByTag("category_fragment") as CategoryFragment
+            if(category_fragment!=null)
+            {   category_fragment.add_new_category(category_name)}
+
+        }
+        else if(dialog_code==1)//renaming category name
+        {
+            var category_fragment: CategoryFragment = supportFragmentManager.findFragmentByTag("category_fragment") as CategoryFragment
+            if(category_fragment!=null)
+            {   category_fragment.rename_category(category_name)}
+        }
+    }
+
+    fun get_color_id(): HashMap<String, Int>
     {
         var map= HashMap<String, Int>()
         var  typedValue1 =  TypedValue()
@@ -90,29 +122,57 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(item.itemId==R.id.expense_list_item)
         {
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.container_fragment,ExpensesFragment(),"expense_fragment").commit()
-            supportActionBar?.title = HtmlCompat.fromHtml("<font color="+medium_color+">" + resources.getString(R.string.expense_list_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
+            fragmentManager.beginTransaction().replace(
+                R.id.container_fragment,
+                ExpensesFragment(),
+                "expense_fragment"
+            ).commit()
+            supportActionBar?.title = HtmlCompat.fromHtml(
+                "<font color=" + medium_color + ">" + resources.getString(
+                    R.string.expense_list_item
+                ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
             drawer_layout.closeDrawers()
         }
         else if(item.itemId==R.id.category_item)
         {
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.container_fragment,CategoryFragment(),"category_fragment").commit()
-            supportActionBar?.title = HtmlCompat.fromHtml("<font color="+medium_color+">" +resources.getString(R.string.category_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
+            fragmentManager.beginTransaction().replace(
+                R.id.container_fragment,
+                CategoryFragment(),
+                "category_fragment"
+            ).commit()
+            supportActionBar?.title = HtmlCompat.fromHtml(
+                "<font color=" + medium_color + ">" + resources.getString(
+                    R.string.category_item
+                ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
             drawer_layout.closeDrawers()
         }
         else if(item.itemId==R.id.report_item)
         {
             //fragmentManager=supportFragmentManager
             //fragmentManager.beginTransaction().replace(R.id.container_fragment,ExpensesFragment(),"expense_fragment").commit()
-            supportActionBar?.title = HtmlCompat.fromHtml("<font color="+medium_color+">" + resources.getString(R.string.report_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
+            supportActionBar?.title = HtmlCompat.fromHtml(
+                "<font color=" + medium_color + ">" + resources.getString(
+                    R.string.report_item
+                ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
             drawer_layout.closeDrawers()
         }
         else if(item.itemId==R.id.backup_item)
         {
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(R.id.container_fragment,SyncFragment(),"sync_fragment").commit()
-            supportActionBar?.title = HtmlCompat.fromHtml("<font color="+medium_color+">" + resources.getString(R.string.sync_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
+            fragmentManager.beginTransaction().replace(
+                R.id.container_fragment,
+                SyncFragment(),
+                "sync_fragment"
+            ).commit()
+            supportActionBar?.title = HtmlCompat.fromHtml(
+                "<font color=" + medium_color + ">" + resources.getString(
+                    R.string.sync_item
+                ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
             drawer_layout.closeDrawers()
         }
         else if(item.itemId==R.id.about_item)

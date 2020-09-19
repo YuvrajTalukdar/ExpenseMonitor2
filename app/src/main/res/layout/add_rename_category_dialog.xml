@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:weightSum="4">
+
+    <TextView
+        android:id="@+id/add_rename_headingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/category_dialog_title"
+        android:textColor="?attr/LightColor"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="?attr/ItemBackgroundColor"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/category_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="?attr/LightColor"
+            android:gravity="start"
+            android:hint="@string/category_dialog_edittext_hint"
+            android:textAlignment="gravity"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:singleLine="true"
+            android:textColor="?attr/MediumColor"
+            android:textColorHint="?attr/DeepColor" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/Black"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/category_dialog_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="?attr/MediumColor"
+            android:background="@drawable/dialog_button_ripple"
+            android:text="@string/ok" />
+
+        <Button
+            android:id="@+id/category_dialog_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="?attr/MediumColor"
+            android:background="@drawable/dialog_button_ripple"
+            android:text="@string/cancel" />
+    </LinearLayout>
+
+</LinearLayout>
