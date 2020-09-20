@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:weightSum="4">
+    android:weightSum="7">
 
     <TextView
         android:id="@+id/add_rename_headingTextView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="@string/category_dialog_title"
-        android:textColor="?attr/LightColor"
+        android:text="@string/add_new_expense_dialog_title"
         android:gravity="center|left"
+        android:textColor="?attr/LightColor"
         android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
         android:layout_weight="1"
@@ -23,24 +23,69 @@
         android:orientation="vertical"
         android:background="?attr/ItemBackgroundColor"
         android:layout_marginTop="10dp"
-        android:layout_weight="2">
+        android:layout_weight="5"
+        android:weightSum="30">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/category_name_edittext"
+            android:id="@+id/item_cost_edittext"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_alignParentStart="true"
             android:backgroundTint="?attr/LightColor"
             android:gravity="start"
-            android:hint="@string/category_dialog_edittext_hint"
+            android:hint="@string/cost_editText"
+            android:inputType="numberDecimal"
             android:textAlignment="gravity"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:paddingStart="10dp"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:textColor="?attr/MediumColor"
+            android:textColorHint="?attr/DeepColor" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/item_name_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentStart="true"
+            android:backgroundTint="?attr/LightColor"
+            android:gravity="start"
+            android:layout_weight="1"
+            android:hint="@string/item_name_editText"
+            android:textAlignment="gravity"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingStart="10dp"
             android:singleLine="true"
             android:textColor="?attr/MediumColor"
             android:textColorHint="?attr/DeepColor" />
+
+        <Spinner
+            android:id="@+id/select_category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="?attr/MediumColor"/>
+
+        <TextView
+            android:id="@+id/date_picket_textView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/select_date"
+            android:textColor="?attr/DeepColor"
+            android:gravity="center|left"
+            android:paddingStart="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="40dp"
+            android:layout_weight="1"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -52,7 +97,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/category_dialog_ok"
+            android:id="@+id/expense_dialog_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -61,7 +106,7 @@
             android:text="@string/ok" />
 
         <Button
-            android:id="@+id/category_dialog_cancel"
+            android:id="@+id/expense_dialog_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

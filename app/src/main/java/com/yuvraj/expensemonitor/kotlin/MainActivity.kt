@@ -20,7 +20,8 @@ import com.yuvraj.expensemonitor.R
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-                                          add_category_dialog.add_category_listener{
+                                          add_category_dialog.add_category_listener,
+                                          add_expense_dialog.add_expense_listener{
 
     private lateinit var drawer_layout : DrawerLayout
     private lateinit var fragmentManager: FragmentManager
@@ -83,7 +84,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
     }
 
-    override fun onDialogOKClicked(dialog_code: Int, category_name: String) {
+    //Expense Fragment functions
+    override fun ExpenseDialogOnOKClicked(dialog_code: Int,item_name: String,item_cost: Float,item_category: String,dat: Int,month: Int,year: Int)
+    {
+
+    }
+
+    //Category Fragment functions
+    override fun CategoryDialogOnOKClicked(dialog_code: Int, category_name: String) {
         if(dialog_code==0)//adding new category
         {
             var category_fragment: CategoryFragment = supportFragmentManager.findFragmentByTag("category_fragment") as CategoryFragment
@@ -99,7 +107,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun get_color_id(): HashMap<String, Int>
+    //Other random functions
+    override fun get_color_id(): HashMap<String, Int>
     {
         var map= HashMap<String, Int>()
         var  typedValue1 =  TypedValue()
@@ -113,6 +122,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return map
     }
 
+    //Drawer menu functions
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
         var map= get_color_id()

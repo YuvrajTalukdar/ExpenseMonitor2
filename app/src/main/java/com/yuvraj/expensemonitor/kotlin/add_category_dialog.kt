@@ -36,7 +36,7 @@ class add_category_dialog() : DialogFragment() {
 
             var ok_button: Button=view.findViewById(R.id.category_dialog_ok)
             ok_button.setOnClickListener(View.OnClickListener {
-                listener.onDialogOKClicked(dialogCode,category_name_editText.text.toString())
+                listener.CategoryDialogOnOKClicked(dialogCode,category_name_editText.text.toString())
             })
 
             var cancel_button: Button=view.findViewById(R.id.category_dialog_cancel)
@@ -49,7 +49,7 @@ class add_category_dialog() : DialogFragment() {
     }
 
     interface add_category_listener
-    {   fun onDialogOKClicked(dialog_code: Int,category_name: String)}
+    {   fun CategoryDialogOnOKClicked(dialog_code: Int,category_name: String)}
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
