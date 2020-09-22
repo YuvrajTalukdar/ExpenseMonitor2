@@ -87,7 +87,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     //Expense Fragment functions
     override fun ExpenseDialogOnOKClicked(dialog_code: Int,item_name: String,item_cost: Float,item_category: String,dat: Int,month: Int,year: Int)
     {
-
+        var expenseFragment: ExpensesFragment = supportFragmentManager.findFragmentByTag("expense_fragment") as ExpensesFragment
+        if(expenseFragment!=null)
+        {   expenseFragment.addExpenseData()}
     }
 
     //Category Fragment functions

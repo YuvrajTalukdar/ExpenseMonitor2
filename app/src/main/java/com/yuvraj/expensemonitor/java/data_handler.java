@@ -17,7 +17,17 @@ public class data_handler {
         }
     }
 
-    public class expense_data_handler{
+    public static class expense_data_handler{
+        public int id;
+        public String date;
+        public float cost;
+        public ArrayList<item_data> item_data_list = new ArrayList();
+    }
 
+    public static class item_data
+    {
+        public Integer item_id;
+        public String item_name,category;
+        public float item_cost;
     }
 }

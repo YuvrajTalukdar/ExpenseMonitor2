@@ -44,10 +44,10 @@ class category_list_recycler_view_adapter(dataHandler1: data_handler,listener1: 
 
     override fun onBindViewHolder(holder: data_holder, position: Int) {
         holder.categoryItemTextView.setText(dataHandler.category_data_list.get(position).category_name)
-        if(dataHandler.category_data_list.get(position).id==1)
-        {   holder.deleteButton.isVisible=false}
-        else
-        {   holder.deleteButton.isVisible=true}
+        when (dataHandler.category_data_list.get(position).id) {
+            1 -> {   holder.deleteButton.isVisible=false}
+            else -> {   holder.deleteButton.isVisible=true}
+        }
     }
 
     override fun getItemCount(): Int {  return dataHandler.category_data_list.size}
