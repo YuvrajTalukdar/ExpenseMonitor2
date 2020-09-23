@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         checkBox_List.clear()
         checkBox_List.add(redScheme)
         checkBox_List.add(greenScheme)
-        checkBox_List.add(greenScheme)
+        checkBox_List.add(greyScheme)
         checkBox_List.add(blueScheme)
         checkBox_List.add(violetScheme)
         checkBox_List.add(pinkScheme)
@@ -159,6 +159,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             supportActionBar?.title = HtmlCompat.fromHtml("<font color=" + medium_color + ">" + resources.getString(R.string.expense_list_item) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             current_fragment_code=1
         }
+        change_ui_element_based_on_theme(settings_reader.getInt("color_scheme_code",3))
     }
 
     override fun onSaveInstanceState(state: Bundle) {
@@ -167,6 +168,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     //Theme functions
+    private fun change_ui_element_based_on_theme(color_scheme_code: Int)
+    {
+        var a=0
+        while(a<checkBox_List.size)
+        {
+            if(a==color_scheme_code)
+            {   checkBox_List.get(a).setChecked(true);}
+            else
+            {   checkBox_List.get(a).setChecked(false);}
+            a++
+        }
+    }
     private fun save_color_scheme_settings(color_scheme: Int)
     {
         settings_reader = getSharedPreferences("settings", Context.MODE_PRIVATE);

@@ -15,15 +15,35 @@
         android:orientation="vertical"
         android:layout_weight="1.7"
         android:weightSum="2">
-
-        <ExpandableListView
-            android:id="@+id/expense_list_expandable_list_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="0dp"
-            android:focusable="true"
-            android:animateLayoutChanges="true"
-            android:layout_weight="2" />
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <TextView
+                android:id="@+id/status_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No expense data present."
+                android:textColor="@color/MediumRed"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="@+id/expense_list_expandable_list_view"
+                app:layout_constraintEnd_toEndOf="@+id/expense_list_expandable_list_view"
+                app:layout_constraintStart_toStartOf="@+id/expense_list_expandable_list_view"
+                app:layout_constraintTop_toTopOf="@+id/expense_list_expandable_list_view" />
+
+            <ExpandableListView
+                android:id="@+id/expense_list_expandable_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:focusable="true"
+                android:animateLayoutChanges="true"
+                android:layout_weight="2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </LinearLayout>
 

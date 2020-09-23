@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -25,6 +27,7 @@ class ExpensesFragment : Fragment() {
     var editDialogGroupId=-1
     var editDialogChildId=-1
     var started_for_editing_data=false
+    lateinit var statusTextView: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,6 +121,12 @@ class ExpensesFragment : Fragment() {
             }
             true
         }
+        statusTextView=view.findViewById(R.id.status_textView)
+        if(dataHandler.expense_data_list.size!=0)
+        {   statusTextView.visibility=View.GONE}
+        else
+        {   statusTextView.visibility=View.VISIBLE}
+
         return view
     }
 
@@ -165,6 +174,8 @@ class ExpensesFragment : Fragment() {
         if(dataHandler.expense_data_list.get(groupId).item_data_list.size==0)
         {   dataHandler.expense_data_list.removeAt(groupId)}
         expandablelistviewAdapter.notifyDataSetChanged()
+        if(dataHandler.expense_data_list.size==0)
+        {   statusTextView.visibility=View.VISIBLE}
     }
 
     fun addExpenseData(item_name: String, item_cost: Float, item_category: String, day: Int, month: Int, year: Int)
@@ -230,6 +241,8 @@ class ExpensesFragment : Fragment() {
             }
             addExpenseDialog.dismiss()
             expandablelistviewAdapter.notifyDataSetChanged()
+            if(dataHandler.expense_data_list.size>0)
+            {   statusTextView.visibility=View.GONE}
 
             Toast.makeText(context, toast_string, Toast.LENGTH_SHORT).show()
         }
