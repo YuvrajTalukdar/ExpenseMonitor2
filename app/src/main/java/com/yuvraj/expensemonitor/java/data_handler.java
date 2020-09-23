@@ -19,7 +19,7 @@ public class data_handler {
 
     public static class expense_data_handler{
         public int id;
-        public String date;
+        public int day,month,year;
         public float cost;
         public ArrayList<item_data> item_data_list = new ArrayList();
     }

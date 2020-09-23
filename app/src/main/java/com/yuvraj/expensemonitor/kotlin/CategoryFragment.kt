@@ -77,7 +77,7 @@ class CategoryFragment() : Fragment(){
                             }
                             a++
                         }
-                        Toast.makeText(context, "Category removed.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Category Removed.", Toast.LENGTH_SHORT).show()
                     }
                 }
                 materialAlertDialogBuilder.setNegativeButton(HtmlCompat.fromHtml("<font color="+medium_color+">No</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)){

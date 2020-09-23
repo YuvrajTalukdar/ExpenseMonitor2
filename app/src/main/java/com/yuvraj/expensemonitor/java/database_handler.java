@@ -14,7 +14,7 @@ public class database_handler extends SQLiteOpenHelper {
     private static final String DATABASE_NAME="database.db";
     private static final String category_table_name="category_table",expense_table_name="expense_table";
     private static final String id="ID",name="NAME";
-    private static final String day="DAY",month="MONTH",year="YEAR",cost="COST",item_name="ITEM_NAME",item_category="CATEGORY";
+    private static final String day="DAY",month="MONTH",year="YEAR",item_cost="COST",item_name="ITEM_NAME",item_category="CATEGORY",days_old="NO_OF_DAYS_OLD";
     private static final String[] default_category_names=new String[]{"Other","Power Bill","House Rent","Food","Travel","Water Bill"};
 
     public database_handler(@Nullable Context context)
@@ -39,14 +39,16 @@ public class database_handler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String expense_table_query="CREATE TABLE IF NOT EXISTS "+expense_table_name+"("+id+" INTEGER PRIMARY KEY AUTOINCREMENT, "+item_name+" TEXT, "+item_category+" TEXT, "+cost+" REAL, "+day+" INTEGER, "+month+" INTEGER, "+year+" INTEGER);";
+        String expense_table_query="CREATE TABLE IF NOT EXISTS "+expense_table_name+"("+id+" INTEGER PRIMARY KEY AUTOINCREMENT, "+item_name+" TEXT, "+item_category+" TEXT, "+item_cost+" REAL, "+day+" INTEGER, "+month+" INTEGER, "+year+" INTEGER, "+days_old+" INTEGER);";
         db.execSQL(expense_table_query);
+        //db.close();
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS "+category_table_name);
         db.execSQL("DROP TABLE IF EXISTS "+expense_table_name);
         onCreate(db);
+        //db.close();
     }
 
     public void rename_category(int category_id,String new_category_name)
@@ -99,4 +101,128 @@ public class database_handler extends SQLiteOpenHelper {
     }
 
     //expense database functions
+
+    private int get_month_size_in_days(int month,int year)
+    {
+        int feb_size;
+        if(month%2==0)
+        {
+            if(year%4==0 && year%400!=0 && year%100==0)
+            {   feb_size=28;}
+            else if(year%4==0)
+            {   feb_size=29;}
+            else
+            {   feb_size=28;}
+        }
+        else
+        {   feb_size=31;}
+        int days=0;
+        for(int a=1;a<month;a++)
+        {
+            if(a==2)
+            {   days+=feb_size;}
+            else if(a%2==0)
+            {   days+=30;}
+            else
+            {   days+=31;}
+        }
+        return days;
+    }
+    private int get_year_size_in_days(int year)
+    {
+        if(year%4==0 && year%400!=0 && year%100==0)
+        {   return 365;}
+        else if(year%4==0)
+        {   return 366;}
+        else
+        {   return 365;}
+    }
+
+    public long add_expense_data(String item_name1,float cost,String category,int purchase_day,int purchase_month,int purchase_year)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(item_name,item_name1);
+        contentValues.put(item_cost,cost);
+        contentValues.put(item_category,category);
+        contentValues.put(day,purchase_day);
+        contentValues.put(month,purchase_month);
+        contentValues.put(year,purchase_year);
+        contentValues.put(days_old,purchase_year*get_year_size_in_days(purchase_year)+get_month_size_in_days(purchase_month,purchase_year)+purchase_day);
+        long l=db.insert(expense_table_name,null,contentValues);
+        db.close();
+        contentValues.clear();
+        return l;
+    }
+
+    public int get_last_entered_expense_data_id()
+    {
+        SQLiteDatabase db=getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT MAX("+id+") FROM "+expense_table_name, null);
+        int maxId;
+        if(!c.moveToFirst())
+        {   maxId=-1;}
+        else
+        {   maxId=c.getInt(0);}
+        c.close();
+        db.close();
+        return maxId;
+    }
+
+    public int delete_expense_data(int data_id)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        int i=db.delete(expense_table_name,id+" = '"+data_id+"'",null);
+        db.close();
+        return i;
+    }
+
+    public long edit_expense_data()
+    {
+
+        return 0;
+    }
+
+    public data_handler get_expense_data()
+    {
+        data_handler data = new data_handler();
+        data.expense_data_list.clear();
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c=db.rawQuery("SELECT * FROM "+expense_table_name+" ORDER BY "+days_old+" DESC",null);
+        c.moveToFirst();
+        int days_old_last=0;
+        int a=0;
+        while(!c.isAfterLast())
+        {
+            data_handler.item_data item = new data_handler.item_data();
+            item.category=c.getString(c.getColumnIndex(item_category));
+            item.item_cost=c.getFloat(c.getColumnIndex(item_cost));
+            item.item_name=c.getString(c.getColumnIndex(item_name));
+            item.item_id=c.getInt(c.getColumnIndex(id));
+            if(days_old_last==c.getInt(c.getColumnIndex(days_old)))
+            {
+                data.expense_data_list.get(a-1).item_data_list.add(item);
+                data.expense_data_list.get(a-1).cost+=item.item_cost;
+            }
+            else
+            {
+                days_old_last=c.getInt(c.getColumnIndex(days_old));
+                data_handler.expense_data_handler single_day_expense = new data_handler.expense_data_handler();
+                single_day_expense.item_data_list.add(item);
+                single_day_expense.id=a;
+                single_day_expense.cost=c.getFloat(c.getColumnIndex(item_cost));
+                single_day_expense.day=c.getInt(c.getColumnIndex(day));
+                single_day_expense.month=c.getInt(c.getColumnIndex(month));
+                single_day_expense.year=c.getInt(c.getColumnIndex(year));
+                data.expense_data_list.add(single_day_expense);
+                a++;
+            }
+            c.moveToNext();
+        }
+
+        c.close();
+        db.close();
+        return data;
+    }
 }

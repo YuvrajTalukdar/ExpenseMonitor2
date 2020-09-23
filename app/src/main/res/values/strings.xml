@@ -25,19 +25,22 @@
     <string name="sign_in_button_text">Sign In with Google</string>
     <string name="sign_out_button_text">Sign Out</string>
     <string name="not_signed_in">Not signed in.</string>
-    <!--Add rename category dialog-->
+    <!--category fragment strings-->
     <string name="category_dialog_title">Add Category..</string>
     <string name="rename_category">Rename Category..</string>
     <string name="category_dialog_edittext_hint">Enter Category Name</string>
     <string name="delete_category">Delete Category</string>
     <string name="delete_dialog_content">Do you want to delete the category?</string>
-    <!--Add new expense dialog-->
+    <!--expense fragment strings-->
     <string name="add_new_expense_dialog_title">Add Expense..</string>
     <string name="cost_editText">Enter Cost</string>
     <string name="item_name_editText">Enter Name</string>
     <string name="select_date">Select Date..</string>
     <string name="edit_item">Edit Item</string>
     <string name="delete_item">Delete Item</string>
+    <string name="delete_expense_dialog_content">Do you want to delete the item?</string>
+    <string name="expense_dialog_title_add">Add Expense..</string>
+    <string name="expense_dialog_edit">Edit Expense..</string>
     <!--Common button text-->
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>

@@ -20,6 +20,15 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
 
     internal lateinit var listener: add_expense_listener
     var spinnerOption=0
+    //for edit item
+    var dialogOption=0
+    var cost: Float=0F
+    var item_name=""
+    var day2=0
+    var month2=0
+    var year2=0
+    var category_name2=""
+
 
     override fun onCreateDialog(@Nullable savedInstanceState: Bundle?): Dialog
     {
@@ -34,6 +43,7 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
             var itemNameEditText: EditText = view.findViewById(R.id.item_name_edittext)
             var datePickerTextView: TextView = view.findViewById(R.id.date_picket_textView)
             var spinner: Spinner = view.findViewById(R.id.select_category_spinner)
+            var titleTextView: TextView = view.findViewById(R.id.expense_dialog_heading)
 
             var db= database_handler(context)
             var dataHandler=db._category_list
@@ -53,21 +63,21 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
             spinner.adapter=categorySpinnerAdapter
             spinner.onItemSelectedListener=this
 
-            var day=-1
-            var month=-1
-            var year=-1
+            var c=Calendar.getInstance()
+            var day=c.get(Calendar.DAY_OF_MONTH)
+            var month=c.get(Calendar.MONTH)+1
+            var year=c.get(Calendar.YEAR)
+            datePickerTextView.setText("" + day + "/" + month + "/" + year)
             datePickerTextView.setOnClickListener()
             {
-                var c=Calendar.getInstance()
                 var datePickerDialog = DatePickerDialog(
                     requireContext(), R.style.DatePickerTheme,
                     { datePicker: DatePicker, year1: Int, month1: Int, day1: Int ->
-                        datePickerTextView.setText("" + day1 + "/" + month1 + "/" + year1)
+                        month = month1+1
+                        datePickerTextView.setText("" + day1 + "/" + month + "/" + year1)
                         day = day1
-                        month = month1
                         year = year1
-                        //execure the code here
-                    }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
+                    }, year, month-1, day
                 )
                 datePickerDialog.show()
             }
@@ -81,20 +91,29 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
                 catch(e: Exception)
                 {   e.printStackTrace()}
 
-                listener.ExpenseDialogOnOKClicked(
-                    0,
-                    itemNameEditText.text.toString(),
-                    cost,
-                    category_list.get(spinnerOption),
-                    day,
-                    month,
-                    year
-                )
+                listener.ExpenseDialogOnOKClicked(dialogOption, itemNameEditText.text.toString(), cost, category_list.get(spinnerOption), day, month, year)
             }
 
             var cancel_button: Button=view.findViewById(R.id.expense_dialog_cancel)
             cancel_button.setOnClickListener{
                 dismiss()
+            }
+
+            if(dialogOption==0)
+            {   titleTextView.setText(resources.getString(R.string.expense_dialog_title_add))}
+            else if(dialogOption==1)
+            {
+                titleTextView.setText(resources.getString(R.string.expense_dialog_edit))
+                cost_editText.setText(cost.toString())
+                itemNameEditText.setText(item_name)
+                var a=0
+                while(!category_list.get(a).equals(category_name2))
+                {   a++}
+                spinner.setSelection(a)
+                datePickerTextView.setText(""+day2+"/"+month2+"/"+year2)
+                day=day2
+                month=month2
+                year=year2
             }
 
             builder.create()

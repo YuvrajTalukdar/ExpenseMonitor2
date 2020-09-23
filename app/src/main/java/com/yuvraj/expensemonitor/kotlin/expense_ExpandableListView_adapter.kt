@@ -22,7 +22,7 @@ class expense_ExpandableListView_adapter(context1: Context, dataHandler1: data_h
 
     interface expense_list_adapter_listener {
         fun onDeleteButtonPressed(groupId: Int,childId: Int)
-        fun onChileClicked(groupId:Int,childId: Int)
+        fun onChildClicked(groupId:Int,childId: Int)
     }
 
     override fun getGroupCount(): Int {
@@ -69,7 +69,7 @@ class expense_ExpandableListView_adapter(context1: Context, dataHandler1: data_h
         var dateTextView: TextView = view.findViewById(R.id.date_textView)
         var amountTextView: TextView = view.findViewById(R.id.amountTextView)
 
-        dateTextView.setText(dataHandler.expense_data_list.get(groupPosition).date)
+        dateTextView.setText(""+dataHandler.expense_data_list.get(groupPosition).day+"/"+dataHandler.expense_data_list.get(groupPosition).month+"/"+dataHandler.expense_data_list.get(groupPosition).year)
         amountTextView.setText(dataHandler.expense_data_list.get(groupPosition).cost.toString())
 
         return view
@@ -100,7 +100,7 @@ class expense_ExpandableListView_adapter(context1: Context, dataHandler1: data_h
         //itemCategoryTextView.setText(dataHandler.expense_data_list.get(groupPosition).item_data_list.get(childPOsition).category)
         view.isClickable=true
         view.setOnClickListener{
-            listener2.onChileClicked(groupPosition,childPOsition)
+            listener2.onChildClicked(groupPosition,childPOsition)
         }
         return view
     }

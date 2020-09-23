@@ -6,7 +6,7 @@
     android:weightSum="7">
 
     <TextView
-        android:id="@+id/add_rename_headingTextView"
+        android:id="@+id/expense_dialog_heading"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="@string/add_new_expense_dialog_title"
