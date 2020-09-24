@@ -12,6 +12,7 @@ import android.view.Window
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -20,13 +21,17 @@ import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.navigation.NavigationView
 import com.yuvraj.expensemonitor.R
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
                                           add_category_dialog.add_category_listener,
-                                          add_expense_dialog.add_expense_listener{
+                                          add_expense_dialog.add_expense_listener,
+                                          SyncFragment.sync_fragment_listener,
+                                          googleSignInHandler.googleSignInHandler_listener{
 
     private lateinit var drawer_layout : DrawerLayout
     private lateinit var fragmentManager: FragmentManager
@@ -35,6 +40,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var settings_reader: SharedPreferences;
     private lateinit var settings_editor: SharedPreferences.Editor
     private var current_fragment_code=-1
+    var is_signed_in = false
+    lateinit var drawer_header_imageView: ImageView
+    lateinit var drawer_header_text_view: TextView
+    var sign_in_handler: googleSignInHandler = googleSignInHandler(this)
+    var syncFragment: SyncFragment = SyncFragment(sign_in_handler)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +53,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         color_scheme_changer(settings_reader.getInt("color_scheme_code",3),true)
         save_color_scheme_settings(settings_reader.getInt("color_scheme_code",3))
         current_color_scheme=settings_reader.getInt("color_scheme_code",3)
-
-        //setTheme(R.style.DarkGreenTheme_NoActionBar)
 
         setContentView(R.layout.activity_main)
 
@@ -77,13 +85,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //for drawer header
         var drawer_header_view: View = navigationView.inflateHeaderView(R.layout.drawer_header)
-        var drawer_header_textview: TextView = drawer_header_view.findViewById(R.id.drawer_header_textView)
-        drawer_header_textview.setOnClickListener{
-            //sign in/sign out
-        }
         var header_background: ImageView = drawer_header_view.findViewById(R.id.headerBackground)
         Glide.with(this).load(R.drawable.drawer_header_background).into(header_background)
-
+        drawer_header_imageView = drawer_header_view.findViewById(R.id.drawer_header_imageView)
+        drawer_header_imageView.setOnClickListener {
+            if (!is_signed_in)
+            {   sign_in_handler.signInWithGoogle()}
+            else
+            {   sign_in_handler.sign_out()}
+        }
+        drawer_header_text_view = drawer_header_view.findViewById(R.id.drawer_header_textView)
+        drawer_header_text_view.setOnClickListener{
+            if (!is_signed_in)
+            {   sign_in_handler.signInWithGoogle()}
+            else
+            {   sign_in_handler.sign_out()}
+        }
         //theme
         var drawer_item_linear_layout = navigationView.menu.findItem(R.id.theme_menu_item).actionView
         var redScheme:CheckBox = drawer_item_linear_layout.findViewById(R.id.red_color_scheme)
@@ -147,7 +164,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else if(savedInstanceState.getInt("current_fragment_code") == 4)
             {
                 fragmentManager = supportFragmentManager
-                fragmentManager.beginTransaction().replace(R.id.container_fragment, SyncFragment(), "sync_fragment").commit()
+                fragmentManager.beginTransaction().replace(R.id.container_fragment, syncFragment, "sync_fragment").commit()
                 supportActionBar?.title=HtmlCompat.fromHtml("<font color="+medium_color+">" + resources.getString(R.string.sync_item) + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY)
                 current_fragment_code=4;
             }
@@ -160,6 +177,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             current_fragment_code=1
         }
         change_ui_element_based_on_theme(settings_reader.getInt("color_scheme_code",3))
+        //sign in functions
+        var account= get_sign_in_status()
+        if(is_signed_in)
+        {
+            if (account != null) {
+                load_account_image_and_id(account)
+            }
+        }
+        else
+        {   reset_account_image_and_id()}
     }
 
     override fun onSaveInstanceState(state: Bundle) {
@@ -209,6 +236,62 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         {   setTheme(R.style.DarkVioletTheme_NoActionBar)}
         else if(color_scheme_code==5 && first_start)
         {   setTheme(R.style.DarkPinkTheme_NoActionBar)}
+    }
+    //syncing functions
+    override fun start_account_choosing_activity(i: Intent, code: Int) {
+        startActivityForResult(i,code)
+    }
+    override fun onActivityResult(request: Int, result: Int, data: Intent?) //for the account selection activity
+    {
+        //println("request=$request result=$result")
+        if (data == null) {
+            println("DATA IS NULL")
+        }
+        if (request == 100 && result == 1)
+        {
+            Toast.makeText(this, "No account selected.", Toast.LENGTH_SHORT).show()
+        }
+        else if (request == 100)
+        {
+            syncFragment.signed_in_layout(true)
+            sign_in_handler.sign_in_handler(data)
+        }
+        super.onActivityResult(request, result, data)
+    }
+    override fun get_sign_in_status(): GoogleSignInAccount?
+    {
+        var account = GoogleSignIn.getLastSignedInAccount(applicationContext)
+        if(account==null)
+        {   is_signed_in=false}
+        else
+        {   is_signed_in=true}
+        return account
+    }
+    override fun is_signed_in_status(): Boolean
+    {   return is_signed_in}
+    override fun set_sign_in_state(state: Boolean)
+    {
+        is_signed_in=state
+        syncFragment.signed_in_layout(state)
+    }
+    override fun load_account_image_and_id(account: GoogleSignInAccount)
+    {
+        if (is_signed_in) {
+            try {
+                if (account.photoUrl != null) {
+                    Glide.with(this).load(account.photoUrl).circleCrop().into(drawer_header_imageView)
+                } else {
+                    Glide.with(this).load(R.drawable.person_icon).circleCrop().into(drawer_header_imageView)
+                }
+                drawer_header_text_view.setText(account.displayName)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+    override fun reset_account_image_and_id() {
+        Glide.with(this).load(R.drawable.person_icon).circleCrop().into(drawer_header_imageView);
+        drawer_header_text_view.setText("Sign In");
     }
 
     //Expense Fragment functions
@@ -310,7 +393,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             fragmentManager=supportFragmentManager
             fragmentManager.beginTransaction().replace(
                 R.id.container_fragment,
-                SyncFragment(),
+                syncFragment,
                 "sync_fragment"
             ).commit()
             supportActionBar?.title = HtmlCompat.fromHtml(

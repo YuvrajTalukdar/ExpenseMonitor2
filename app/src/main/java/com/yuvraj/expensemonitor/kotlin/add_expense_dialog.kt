@@ -156,5 +156,4 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
         catch (e: ClassCastException)
         {   throw ClassCastException((context.toString() + " must implement add_expense_listener"))}
     }
-
 }

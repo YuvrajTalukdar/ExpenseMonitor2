@@ -51,6 +51,8 @@ public class database_handler extends SQLiteOpenHelper {
         //db.close();
     }
 
+    //category database functions
+
     public void rename_category(int category_id,String new_category_name)
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -61,8 +63,6 @@ public class database_handler extends SQLiteOpenHelper {
         //rename category in expense table
         db.close();
     }
-
-    //category database functions
 
     public long add_new_category(String category_name)
     {
@@ -175,12 +175,6 @@ public class database_handler extends SQLiteOpenHelper {
         int i=db.delete(expense_table_name,id+" = '"+data_id+"'",null);
         db.close();
         return i;
-    }
-
-    public long edit_expense_data()
-    {
-
-        return 0;
     }
 
     public data_handler get_expense_data()
