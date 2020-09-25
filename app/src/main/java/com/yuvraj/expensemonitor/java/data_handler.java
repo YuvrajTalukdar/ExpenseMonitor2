@@ -26,8 +26,9 @@ public class data_handler {
 
     public static class item_data
     {
-        public Integer item_id;
+        public int item_id;
         public String item_name,category;
         public float item_cost;
+        public String data_id;
     }
 }

@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.database_handler
 
 class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
 
@@ -23,6 +25,7 @@ class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
     {
         fun is_signed_in_status(): Boolean
         fun get_sign_in_status(): GoogleSignInAccount?
+        fun backup_restore(start_code: Int)
     }
 
     override fun onCreateView(
@@ -38,6 +41,12 @@ class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
         var backupButton: Button = v.findViewById(R.id.Perform_Local_Backup)
         var seitch: Switch = v.findViewById(R.id.Auto_sync_switch)
 
+        backupRestoreButton.setOnClickListener{
+            listener.backup_restore(0)
+        }
+        backupButton.setOnClickListener{
+            listener.backup_restore(1)
+        }
         signInGoogleButton.setOnClickListener {
             if (!is_signed_in) {
                 sign_in_handler.signInWithGoogle()

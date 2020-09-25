@@ -7,19 +7,32 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.Calendar;
+import java.util.Random;
 
 public class database_handler extends SQLiteOpenHelper {
 
     private static int DATABASE_VERSION =1;
     private static final String DATABASE_NAME="database.db";
     private static final String category_table_name="category_table",expense_table_name="expense_table";
-    private static final String id="ID",name="NAME";
+    private static final String id="ID",name="NAME",unique_id="DATA_ID";
     private static final String day="DAY",month="MONTH",year="YEAR",item_cost="COST",item_name="ITEM_NAME",item_category="CATEGORY",days_old="NO_OF_DAYS_OLD";
     private static final String[] default_category_names=new String[]{"Other","Power Bill","House Rent","Food","Travel","Water Bill"};
+    private Context context;
 
     public database_handler(@Nullable Context context)
     {
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
+        this.context=context;
 
         SQLiteDatabase db = getReadableDatabase();
         String check_presence_of_table="SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = '"+category_table_name+"'";
@@ -39,7 +52,7 @@ public class database_handler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String expense_table_query="CREATE TABLE IF NOT EXISTS "+expense_table_name+"("+id+" INTEGER PRIMARY KEY AUTOINCREMENT, "+item_name+" TEXT, "+item_category+" TEXT, "+item_cost+" REAL, "+day+" INTEGER, "+month+" INTEGER, "+year+" INTEGER, "+days_old+" INTEGER);";
+        String expense_table_query="CREATE TABLE IF NOT EXISTS "+expense_table_name+"("+id+" INTEGER PRIMARY KEY AUTOINCREMENT, "+item_name+" TEXT, "+item_category+" TEXT, "+item_cost+" REAL, "+day+" INTEGER, "+month+" INTEGER, "+year+" INTEGER, "+days_old+" INTEGER, "+unique_id+" TEXT);";
         db.execSQL(expense_table_query);
         //db.close();
     }
@@ -138,7 +151,45 @@ public class database_handler extends SQLiteOpenHelper {
         {   return 365;}
     }
 
-    public long add_expense_data(String item_name1,float cost,String category,int purchase_day,int purchase_month,int purchase_year)
+    private String generate_password(int length,boolean c_letter,boolean s_letters,boolean numbers,boolean spl_char)
+    {
+        StringBuffer string_buff = new StringBuffer();
+        if(c_letter==true || s_letters==true || numbers==true || spl_char==true) {
+            while (length != 0) {
+                byte[] array = new byte[256];
+                new Random().nextBytes(array);
+                String random_string = new String(array, Charset.forName("UTF-8"));
+                int a;
+                for (a = 0; a < random_string.length(); a++) {
+
+                    char ch = random_string.charAt(a);
+
+                    if ((((ch >= 'a') && (ch <= 'z') && (s_letters == true))
+                            || ((ch >= 'A') && (ch <= 'Z') && (c_letter == true))
+                            || ((ch >= '0') && (ch <= '9') && (numbers == true))
+                            || ((ch >= '!') && (ch <= '/') && (spl_char == true))
+                    )
+                            && (length > 0)) {
+
+                        string_buff.append(ch);
+                        length--;
+                    }
+                }
+            }
+        }
+        return string_buff.toString();
+    }
+    private String create_unique_data_entry_id()
+    {
+        String unique_id1=generate_password(5,true,true,true,true);
+        int y= Calendar.getInstance().get(Calendar.YEAR);
+        int m=Calendar.getInstance().get(Calendar.MONTH);
+        int d=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        long t=Calendar.getInstance().getTime().getTime();
+        return ""+d+"_"+m+"_"+y+"_"+t+"_"+unique_id1;
+    }
+
+    public long add_expense_data(boolean for_restore,String unique_id1,String item_name1,float cost,String category,int purchase_day,int purchase_month,int purchase_year)
     {
         SQLiteDatabase db = getReadableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -149,6 +200,10 @@ public class database_handler extends SQLiteOpenHelper {
         contentValues.put(month,purchase_month);
         contentValues.put(year,purchase_year);
         contentValues.put(days_old,purchase_year*get_year_size_in_days(purchase_year)+get_month_size_in_days(purchase_month,purchase_year)+purchase_day);
+        if(for_restore)
+        {   contentValues.put(unique_id,unique_id1);}
+        else
+        {   contentValues.put(unique_id,create_unique_data_entry_id());}
         long l=db.insert(expense_table_name,null,contentValues);
         db.close();
         contentValues.clear();
@@ -194,6 +249,7 @@ public class database_handler extends SQLiteOpenHelper {
             item.item_cost=c.getFloat(c.getColumnIndex(item_cost));
             item.item_name=c.getString(c.getColumnIndex(item_name));
             item.item_id=c.getInt(c.getColumnIndex(id));
+            item.data_id=c.getString(c.getColumnIndex(unique_id));
             if(days_old_last==c.getInt(c.getColumnIndex(days_old)))
             {
                 data.expense_data_list.get(a-1).item_data_list.add(item);
@@ -218,5 +274,115 @@ public class database_handler extends SQLiteOpenHelper {
         c.close();
         db.close();
         return data;
+    }
+
+    //backup and restore data
+
+    public void backup_data(OutputStream out)
+    {
+        data_handler dataHandler = get_expense_data();
+        String heading="ID,Item_Name,Cost,Category,Day,Month,Year,"+unique_id+"\n";
+        try {
+            out.write(heading.getBytes());
+            for (int a = 0; a < dataHandler.expense_data_list.size(); a++) {
+                for (int b = 0; b < dataHandler.expense_data_list.get(a).item_data_list.size(); b++) {
+                    String line = "" + dataHandler.expense_data_list.get(a).item_data_list.get(b).item_id + "," +
+                            dataHandler.expense_data_list.get(a).item_data_list.get(b).item_name + "," +
+                            dataHandler.expense_data_list.get(a).item_data_list.get(b).item_cost + "," +
+                            dataHandler.expense_data_list.get(a).item_data_list.get(b).category + "," +
+                            dataHandler.expense_data_list.get(a).day + "," +
+                            dataHandler.expense_data_list.get(a).month + "," +
+                            dataHandler.expense_data_list.get(a).year + "," +
+                            dataHandler.expense_data_list.get(a).item_data_list.get(b).data_id+"\n";
+
+                    out.write(line.getBytes());
+                }
+            }
+            out.close();
+            dataHandler.expense_data_list.clear();
+            dataHandler.category_data_list.clear();
+        }
+        catch(Exception e)
+        {   e.printStackTrace();}
+    }
+
+    private void safety_check_and_add_data(boolean for_restore,String unique_id1,String item_name1,float cost,String category,int purchase_day,int purchase_month,int purchase_year)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+        if(unique_id1.equals(""))
+        {   unique_id1="no_id";}
+        Cursor c = db.rawQuery("SELECT * FROM "+expense_table_name+" WHERE "+unique_id+" = '"+unique_id1+"'",null);
+        if(!c.moveToFirst())
+        {
+            add_expense_data(for_restore,unique_id1,item_name1,cost,category,purchase_day,purchase_month,purchase_year);
+            SQLiteDatabase db2 = getReadableDatabase();
+            Cursor c2 = db2.rawQuery("SELECT * FROM "+category_table_name+" WHERE "+name+" = '"+category+"'",null);
+            if(!c2.moveToFirst())
+            {   add_new_category(category);}
+            c2.close();
+            db2.close();
+        }
+        c.close();
+        db.close();
+    }
+
+    public boolean restore_data(InputStream in)//ok tested
+    {
+        try{
+            String line="";
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            if(in != null)
+            {
+                int spending_id=-1,purchase_day=-1,purchase_month=-1,purchase_year=-1;
+                float item_cost=0.0F;
+                String item_name="",item_category="",unique_id1="",temp="";
+                int col_id=0,row_id=0;
+                while((line = reader.readLine()) != null)
+                {
+                    //System.out.println("line= "+line);
+                    if(row_id==0)
+                    {   row_id++;continue;}
+                    temp="";
+                    col_id=0;
+                    for(int a=0;a<line.length();a++)
+                    {
+                        if(line.charAt(a)==','||a==line.length()-1)
+                        {
+                            if(a==line.length()-1)
+                            {   temp+=line.charAt(a);}
+                            if(col_id==0)
+                            {   spending_id=Integer.parseInt(temp);}
+                            else if(col_id==1)
+                            {   item_name=temp;}
+                            else if(col_id==2)
+                            {   item_cost=Float.parseFloat(temp);}
+                            else if(col_id==3)
+                            {   item_category=temp;}
+                            else if(col_id==4)
+                            {   purchase_day=Integer.parseInt(temp);}
+                            else if(col_id==5)
+                            {   purchase_month=Integer.parseInt(temp);}
+                            else if(col_id==6)
+                            {   purchase_year=Integer.parseInt(temp);}
+                            else if(col_id==7)
+                            {   unique_id1=temp;}
+                            temp="";
+                            col_id++;
+                        }
+                        else
+                        {   temp+=line.charAt(a);}
+                    }
+                    if(col_id==8)
+                    {   safety_check_and_add_data(true,unique_id1,item_name,item_cost,item_category,purchase_day,purchase_month,purchase_year);}
+                    else
+                    {   throw new Exception("Invalid backup file.");}
+                }
+            }
+            reader.close();
+            in.close();
+        }
+        catch(Exception e)
+        {   e.printStackTrace();return false;}
+        return true;
     }
 }

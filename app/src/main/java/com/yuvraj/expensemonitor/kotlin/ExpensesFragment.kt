@@ -198,7 +198,7 @@ class ExpensesFragment : Fragment() {
             else
             {   toast_string="Expense Added."}
 
-            db.add_expense_data(item_name, item_cost, item_category, day, month, year)
+            db.add_expense_data(false,"",item_name, item_cost, item_category, day, month, year)
             var a=0;
             var no_hit=false
             if(dataHandler.expense_data_list.size>0)
