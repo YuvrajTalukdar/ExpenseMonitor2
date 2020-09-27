@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yuvraj.expensemonitor.R
 import com.yuvraj.expensemonitor.java.data_handler
 import com.yuvraj.expensemonitor.java.database_handler
@@ -35,8 +31,8 @@ class ExpensesFragment : Fragment() {
         var view=inflater.inflate(R.layout.fragment_expenses, container, false)
 
         addExpenseDialog= add_expense_dialog()
-        var floatingActionButton: FloatingActionButton = view.findViewById(R.id.floatingActionButton_expense_fragment)
-        floatingActionButton.setOnClickListener()
+        var add_expense_button: ImageButton = view.findViewById(R.id.add_expense_button)
+        add_expense_button.setOnClickListener()
         {
             addExpenseDialog.dialogOption=0
             addExpenseDialog.show(parentFragmentManager, "add_expense_dialog")

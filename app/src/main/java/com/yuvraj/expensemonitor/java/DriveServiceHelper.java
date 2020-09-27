@@ -42,7 +42,7 @@ public class DriveServiceHelper {
                 System.out.println("Size1===="+files.size());
                 for(int a=0;a<files.size();a++)
                 {
-                    if(files.get(a).getName().contains("PasswordGeneratorAndManagerBackup"))
+                    if(files.get(a).getName().contains("ExpenseMonitorBackup"))
                     {
                         System.out.println("Delete attempt "+a);
                         mDriveService.files().delete(files.get(a).getId()).execute();

@@ -3,6 +3,8 @@ package com.yuvraj.expensemonitor.kotlin
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var drawer_header_text_view: TextView
     var sign_in_handler: googleSignInHandler = googleSignInHandler(this)
     var syncFragment: SyncFragment = SyncFragment(sign_in_handler)
+    var is_auto_sync_on=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -225,6 +228,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         else
         {   reset_account_image_and_id()}
+
+        if(check_auto_sync_state() && is_signed_in)
+        {
+            var dbHandler= database_handler(this)
+            sign_in_handler.sync_now(false,dbHandler)
+            dbHandler.close()
+        }
     }
 
     override fun onSaveInstanceState(state: Bundle) {
@@ -276,7 +286,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         {   setTheme(R.style.DarkPinkTheme_NoActionBar)}
     }
 
-    //backup restore functions
+    //sync fragment functions
+
+    override fun set_auto_sync_state(state: Boolean) {
+        settings_editor = getSharedPreferences("settings",Context.MODE_PRIVATE).edit()
+        settings_editor.putBoolean("auto_sync_state",state)
+        settings_editor.apply()
+        is_auto_sync_on=state
+    }
+
+    override fun check_auto_sync_state(): Boolean
+    {
+        settings_reader = getSharedPreferences("settings",Context.MODE_PRIVATE)
+        if(settings_reader.getBoolean("auto_sync_state",false))
+        {
+            is_auto_sync_on=true
+            return true
+        }
+        else
+        {
+            is_auto_sync_on=false
+            return false
+        }
+    }
+
+    override fun lock_ui(lock: Boolean) {
+        syncFragment.lock_ui(lock)
+    }
+
     override fun backup_restore(start_code: Int) {
         if(start_code==0)//restore
         {
@@ -294,7 +331,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    //syncing functions
+    override fun check_internet_connection(): Boolean {
+        var connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        var result = when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+        return result
+    }
+    override fun sync_now(first_time_sync: Boolean) {
+        var dbHandler = database_handler(this)
+        sign_in_handler.sync_now(first_time_sync,dbHandler)
+        dbHandler.close()
+    }
     override fun start_account_choosing_activity(i: Intent, code: Int) {
         startActivityForResult(i, code)
     }
@@ -307,7 +360,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         else if (request == 100 && result == RESULT_OK)
         {
             syncFragment.signed_in_layout(true)
-            sign_in_handler.sign_in_handler(data)
+            var dbHandler = database_handler(this)
+            sign_in_handler.sign_in_handler(data,dbHandler)
+            dbHandler.close()
         }
         else if(request==0  && result == RESULT_OK)//restore
         {
@@ -323,6 +378,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     {   Toast.makeText(this, "Invalid backup file.", Toast.LENGTH_SHORT).show()}
                     else
                     {   Toast.makeText(this, "Data restoration complete.", Toast.LENGTH_SHORT).show()}
+                    dbHandler.close()
                 }
             }
         }
@@ -335,6 +391,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (backupDocumentFile != null) {
                     var dbHandler = database_handler(this)
                     dbHandler.backup_data(contentResolver.openOutputStream(backupDocumentFile.uri))
+                    dbHandler.close()
                 }
             }
         }

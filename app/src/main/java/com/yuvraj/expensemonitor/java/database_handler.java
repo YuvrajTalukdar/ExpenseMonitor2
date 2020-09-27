@@ -7,14 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.documentfile.provider.DocumentFile;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Random;
@@ -181,9 +178,9 @@ public class database_handler extends SQLiteOpenHelper {
     }
     private String create_unique_data_entry_id()
     {
-        String unique_id1=generate_password(5,true,true,true,true);
+        String unique_id1=generate_password(5,true,true,true,false);
         int y= Calendar.getInstance().get(Calendar.YEAR);
-        int m=Calendar.getInstance().get(Calendar.MONTH);
+        int m=Calendar.getInstance().get(Calendar.MONTH)+1;
         int d=Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         long t=Calendar.getInstance().getTime().getTime();
         return ""+d+"_"+m+"_"+y+"_"+t+"_"+unique_id1;

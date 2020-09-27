@@ -8,24 +8,30 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Switch
 import android.widget.TextView
-import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.yuvraj.expensemonitor.R
-import com.yuvraj.expensemonitor.java.database_handler
 
 class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
 
     var is_signed_in=false
+    var is_locked=false
     lateinit var email_textView: TextView
     internal lateinit var listener: sync_fragment_listener//= context as sync_fragment_listener
     lateinit var signInGoogleButton: Button
+    lateinit var syncButton: Button
+    lateinit var backupRestoreButton: Button
+    lateinit var backupButton: Button
+    lateinit var switch: Switch
 
     interface sync_fragment_listener
     {
         fun is_signed_in_status(): Boolean
         fun get_sign_in_status(): GoogleSignInAccount?
         fun backup_restore(start_code: Int)
+        fun sync_now(first_time_sync: Boolean)
+        fun check_auto_sync_state(): Boolean
+        fun set_auto_sync_state(state: Boolean)
     }
 
     override fun onCreateView(
@@ -36,10 +42,21 @@ class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
 
         email_textView = v.findViewById(R.id.account_name_TextView)
         signInGoogleButton = v.findViewById(R.id.Sign_In_With_Google_Account)
-        var syncButtin: Button = v.findViewById(R.id.sync_now_button)
-        var backupRestoreButton: Button = v.findViewById(R.id.Load_Backup_file)
-        var backupButton: Button = v.findViewById(R.id.Perform_Local_Backup)
-        var seitch: Switch = v.findViewById(R.id.Auto_sync_switch)
+        syncButton = v.findViewById(R.id.sync_now_button)
+        backupRestoreButton = v.findViewById(R.id.Load_Backup_file)
+        backupButton = v.findViewById(R.id.Perform_Local_Backup)
+        switch = v.findViewById(R.id.Auto_sync_switch)
+
+        switch.setOnClickListener{
+            if(listener.check_auto_sync_state())
+            {   listener.set_auto_sync_state(false)}
+            else
+            {   listener.set_auto_sync_state(true)}
+        }
+        if(listener.check_auto_sync_state())
+        {   switch.isChecked=true}
+        else
+        {   switch.isChecked=false}
 
         backupRestoreButton.setOnClickListener{
             listener.backup_restore(0)
@@ -54,12 +71,38 @@ class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
                 sign_in_handler.sign_out()
             }
         }
-        syncButtin.setOnClickListener {
-
+        syncButton.setOnClickListener {
+            listener.sync_now(false)
         }
         signed_in_layout(listener.is_signed_in_status())
+        lock_ui(is_locked)
 
         return v
+    }
+
+    fun lock_ui(lock: Boolean)
+    {
+        is_locked=lock
+        if(context!=null)
+        {
+            if (lock) {
+                signInGoogleButton.isEnabled = false
+                syncButton.isEnabled = false
+                syncButton.setText(resources.getText(R.string.syncing))
+                backupButton.isEnabled = false
+                backupButton.isEnabled = false
+                backupRestoreButton.isEnabled = false
+                switch.isEnabled = false
+            } else {
+                signInGoogleButton.isEnabled = true
+                syncButton.isEnabled = true
+                syncButton.setText(resources.getText(R.string.sync_button_text))
+                backupButton.isEnabled = true
+                backupButton.isEnabled = true
+                backupRestoreButton.isEnabled = true
+                switch.isEnabled = true
+            }
+        }
     }
 
     fun signed_in_layout(status: Boolean) {
