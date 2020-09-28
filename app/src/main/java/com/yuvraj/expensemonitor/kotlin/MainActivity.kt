@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
+import androidx.core.view.GravityCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
@@ -82,6 +83,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(action_bar_toggle)
         action_bar_toggle.isDrawerIndicatorEnabled = true
         action_bar_toggle.syncState()
+        drawer_layout.addDrawerListener(object: DrawerLayout.DrawerListener{
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+            override fun onDrawerOpened(drawerView: View) {}
+            override fun onDrawerClosed(drawerView: View) {
+                change_fragment(current_fragment_code)
+            }
+            override fun onDrawerStateChanged(newState: Int) {}
+        })
 
         //for status bar and navigation bar color
         var window: Window = window
@@ -145,62 +154,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         map.clear()
         if(savedInstanceState!=null)
         {
-            if(savedInstanceState.getInt("current_fragment_code")==1)
-            {
-                supportActionBar?.setTitle(
-                    HtmlCompat.fromHtml(
-                        "<font color=" + medium_color + ">" + resources.getString(
-                            R.string.expense_list_item
-                        ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
-                )
-                fragmentManager = supportFragmentManager
-                fragmentManager.beginTransaction().replace(
-                    R.id.container_fragment,
-                    ExpensesFragment(),
-                    "expense_fragment"
-                ).commit()
-                current_fragment_code=1
-            }
-            else if (savedInstanceState.getInt("current_fragment_code") == 2)
-            {
-                fragmentManager = supportFragmentManager
-                fragmentManager.beginTransaction().replace(
-                    R.id.container_fragment,
-                    CategoryFragment(),
-                    "category_fragment"
-                ).commit()
-                supportActionBar?.setTitle(
-                    HtmlCompat.fromHtml(
-                        "<font color=" + medium_color + ">" + resources.getString(
-                            R.string.category_item
-                        ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
-                    )
-                )
-                current_fragment_code=2;
-            }
-            else if (savedInstanceState.getInt("current_fragment_code") == 3)
-            {
-                /*fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container_fragment, new Sync_Fragment(), "syncFragment").commit();
-                getSupportActionBar().setTitle(HtmlCompat.fromHtml("<font color="+medium_color+">" + "Cloud Sync & Local Backup" + "</font>",HtmlCompat.FROM_HTML_MODE_LEGACY));
-                current_fragment_code=3;*/
-            }
-            else if(savedInstanceState.getInt("current_fragment_code") == 4)
-            {
-                fragmentManager = supportFragmentManager
-                fragmentManager.beginTransaction().replace(
-                    R.id.container_fragment,
-                    syncFragment,
-                    "sync_fragment"
-                ).commit()
-                supportActionBar?.title=HtmlCompat.fromHtml(
-                    "<font color=" + medium_color + ">" + resources.getString(
-                        R.string.sync_item
-                    ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
-                )
-                current_fragment_code=4;
-            }
+            current_fragment_code=savedInstanceState.getInt("current_fragment_code")
+            change_fragment(current_fragment_code)
         }
         else
         {
@@ -498,14 +453,47 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     //Drawer menu functions
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
+        //drawer_layout.closeDrawer(GravityCompat.START)
+        if(item.itemId==R.id.expense_list_item)
+        {
+            current_fragment_code=1
+            drawer_layout.closeDrawers()
+        }
+        else if(item.itemId==R.id.category_item)
+        {
+            current_fragment_code=2
+            drawer_layout.closeDrawers()
+        }
+        else if(item.itemId==R.id.report_item)
+        {
+            current_fragment_code=3
+            drawer_layout.closeDrawers()
+        }
+        else if(item.itemId==R.id.backup_item)
+        {
+            current_fragment_code=4
+            drawer_layout.closeDrawers()
+        }
+        else if(item.itemId==R.id.about_item)
+        {
+            drawer_layout.closeDrawers()
+        }
+        return true
+    }
+
+    fun change_fragment(id: Int)
+    {
         var map= get_color_id()
         var medium_color = String.format("#%06X", 0xFFFFFF and map["MediumColor"]!!)
         map.clear()
-
-        if(item.itemId==R.id.expense_list_item)
+        //drawer_layout.closeDrawer(GravityCompat.START)
+        if(id==1)
         {
+
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(
+            var transaction = fragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
+            transaction.replace(
                 R.id.container_fragment,
                 ExpensesFragment(),
                 "expense_fragment"
@@ -515,13 +503,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     R.string.expense_list_item
                 ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            current_fragment_code=1
-            drawer_layout.closeDrawers()
         }
-        else if(item.itemId==R.id.category_item)
+        else if(id==2)
         {
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(
+            var transaction = fragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
+            transaction.replace(
                 R.id.container_fragment,
                 CategoryFragment(),
                 "category_fragment"
@@ -531,10 +519,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     R.string.category_item
                 ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            current_fragment_code=2
-            drawer_layout.closeDrawers()
         }
-        else if(item.itemId==R.id.report_item)
+        else if(id==3)
         {
             //fragmentManager=supportFragmentManager
             //fragmentManager.beginTransaction().replace(R.id.container_fragment,ExpensesFragment(),"expense_fragment").commit()
@@ -543,13 +529,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     R.string.report_item
                 ) + "</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
             )
-            current_fragment_code=3
-            drawer_layout.closeDrawers()
         }
-        else if(item.itemId==R.id.backup_item)
+        else if(id==4)
         {
             fragmentManager=supportFragmentManager
-            fragmentManager.beginTransaction().replace(
+            var transaction = fragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.fade_in,R.anim.fade_out)
+            transaction.replace(
                 R.id.container_fragment,
                 syncFragment,
                 "sync_fragment"
@@ -562,11 +548,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             current_fragment_code=4
             drawer_layout.closeDrawers()
         }
-        else if(item.itemId==R.id.about_item)
+        else if(id==5)
         {
-            drawer_layout.closeDrawers()
-        }
-        return true
-    }
 
+        }
+    }
 }

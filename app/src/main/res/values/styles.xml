@@ -87,7 +87,7 @@
         <!-- Basic color scheme here. -->
         <item name="DeepColor">@color/White</item>
         <item name="MediumColor">@color/MediumGrey</item>
-        <item name="DarkColor">@color/DarkGrey</item>
+        <item name="DarkColor">@color/White</item>
         <item name="LightColor">@color/LightGrey</item>
         <!-- Specific element styles here. -->
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
