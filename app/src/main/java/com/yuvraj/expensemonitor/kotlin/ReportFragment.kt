@@ -35,11 +35,11 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
     internal lateinit var listener: reportFragmentListener
     var year_list = ArrayList<Int>()
     var c=Calendar.getInstance()
-    var month=c.get(Calendar.MONTH)
+    var month=c.get(Calendar.MONTH)+1
     var year=c.get(Calendar.YEAR)
     lateinit var recycler_view: RecyclerView
     lateinit var recyclerViewAdapter: reportRecyclerViewAdapter
-    var month_index=0
+    lateinit var statusTextView: TextView
 
 
     class data_month_wise{
@@ -78,6 +78,7 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
         var month_spinner: Spinner = view.findViewById(R.id.month_spinner)
         var year_spinner: Spinner = view.findViewById(R.id.year_spinner)
         recycler_view = view.findViewById(R.id.report_recyclerView)
+        statusTextView = view.findViewById(R.id.report_recycler_view_status)
 
         barChart = view.findViewById(R.id.barChart)
         pieChart = view.findViewById(R.id.pieChart)
@@ -172,6 +173,8 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
             mode_changing_data.year=year
             mode_changing_data.month=month
             mode_changing_data.index=get_month_index(month,year)
+            if(mode_changing_data.index>=month_wise_expense.size)
+            {   statusTextView.visibility=View.VISIBLE}
             mode_changing_data.category_mode=true
             recyclerViewAdapter.notifyDataSetChanged()
         }
@@ -184,13 +187,14 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
             month_spinner.isVisible=false
             pieChart.isVisible=false
             barChart.isVisible=true
+            statusTextView.visibility=View.GONE
             mode_changing_data.year=year
             mode_changing_data.month=month
             mode_changing_data.index=-1
             mode_changing_data.category_mode=false
             recyclerViewAdapter.notifyDataSetChanged()
         }
-        month_spinner.setSelection(month)
+        month_spinner.setSelection(month-1)
         a=0
         while(a<year_list.size-1)
         {
@@ -218,7 +222,7 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
         pieChart.legend.textColor=map["MediumColor"]!!
         pieChart.legend.textSize=15.0f
         pieChart.transparentCircleRadius=30.0f
-        addPieChartData(month+1,year,map)
+        addPieChartData(month,year,map)
 
         //recycler_view setup
         var linear_layout = LinearLayoutManager(view.context)
@@ -265,7 +269,10 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
             a++
         }
         mode_changing_data.index=a
-        month_index=a
+        if(a>=month_wise_expense.size)
+        {   statusTextView.visibility=View.VISIBLE}
+        else
+        {   statusTextView.visibility=View.GONE}
 
         val pieDataSet = PieDataSet(yEntrys,"" )
         pieDataSet.sliceSpace = 2.0f
@@ -299,12 +306,12 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
         else
         {   (adapterView!!.getChildAt(0) as TextView).setTextColor(map["DeepColor"]!!)}
         if(v==month_spinner.selectedView)
-        {   month=index}
+        {   month=index+1}
         else if(v==year_spinner.selectedView)
         {   year=year_list.get(index)}
         mode_changing_data.year=year
         mode_changing_data.month=month
-        addPieChartData(month+1,year,map)
+        addPieChartData(month,year,map)
         if(::recyclerViewAdapter.isInitialized)
         {   recyclerViewAdapter.notifyDataSetChanged()}
     }

@@ -61,15 +61,6 @@ class reportRecyclerViewAdapter(var map: HashMap<String,Int>, var month_wise_dat
             {   return month_wise_data.get(mode_changing_data.index).category_wise_expense.size+1}
         }
         else
-        {
-            return month_wise_data.size
-        }
-        /*
-        if(mode_changing_data.category_mode && mode_changing_data.index<month_wise_data.size && mode_changing_data.index!=-1)
-        {   return month_wise_data.get(mode_changing_data.index).category_wise_expense.size+1}
-        else if(mode_changing_data.index>=month_wise_data.size)
-        {   return 0}
-        else if(mode_changing_data.index==-1 || )
-        {   return month_wise_data.size}*/
+        {   return month_wise_data.size}
     }
 }

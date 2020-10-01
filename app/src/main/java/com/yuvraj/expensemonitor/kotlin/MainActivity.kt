@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var sign_in_handler: googleSignInHandler = googleSignInHandler(this)
     var syncFragment: SyncFragment = SyncFragment(sign_in_handler)
     var is_auto_sync_on=false
+    var drawer_item_clicked=false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +89,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
             override fun onDrawerOpened(drawerView: View) {}
             override fun onDrawerClosed(drawerView: View) {
-                change_fragment(current_fragment_code)
+                if(drawer_item_clicked)
+                {
+                    drawer_item_clicked=false
+                    change_fragment(current_fragment_code)
+                }
             }
             override fun onDrawerStateChanged(newState: Int) {}
         })
@@ -448,6 +453,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean
     {
         //drawer_layout.closeDrawer(GravityCompat.START)
+        drawer_item_clicked=true
         if(item.itemId==R.id.expense_list_item)
         {
             current_fragment_code=1
