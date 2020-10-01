@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/textview_style"
-    android:gravity="center_vertical"
+    android:gravity="center"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:padding="9dp"
     android:text="Select Vault"

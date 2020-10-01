@@ -28,6 +28,10 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
     var month2=0
     var year2=0
     var category_name2=""
+    var c=Calendar.getInstance()
+    var day=c.get(Calendar.DAY_OF_MONTH)
+    var month=c.get(Calendar.MONTH)+1
+    var year=c.get(Calendar.YEAR)
 
 
     override fun onCreateDialog(@Nullable savedInstanceState: Bundle?): Dialog
@@ -63,10 +67,6 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
             spinner.adapter=categorySpinnerAdapter
             spinner.onItemSelectedListener=this
 
-            var c=Calendar.getInstance()
-            var day=c.get(Calendar.DAY_OF_MONTH)
-            var month=c.get(Calendar.MONTH)+1
-            var year=c.get(Calendar.YEAR)
             datePickerTextView.setText("" + day + "/" + month + "/" + year)
             datePickerTextView.setOnClickListener()
             {
@@ -90,7 +90,6 @@ class add_expense_dialog() : DialogFragment(), DatePickerDialog.OnDateSetListene
                 }
                 catch(e: Exception)
                 {   e.printStackTrace()}
-
                 listener.ExpenseDialogOnOKClicked(dialogOption, itemNameEditText.text.toString(), cost, category_list.get(spinnerOption), day, month, year)
             }
 

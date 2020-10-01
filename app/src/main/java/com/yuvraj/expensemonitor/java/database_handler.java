@@ -115,17 +115,13 @@ public class database_handler extends SQLiteOpenHelper {
     private int get_month_size_in_days(int month,int year)
     {
         int feb_size;
-        if(month%2==0)
-        {
-            if(year%4==0 && year%400!=0 && year%100==0)
-            {   feb_size=28;}
-            else if(year%4==0)
-            {   feb_size=29;}
-            else
-            {   feb_size=28;}
-        }
+        if(year%4==0 && year%400!=0 && year%100==0)
+        {   feb_size=28;}
+        else if(year%4==0)
+        {   feb_size=29;}
         else
-        {   feb_size=31;}
+        {   feb_size=28;}
+
         int days=0;
         for(int a=1;a<month;a++)
         {
@@ -138,7 +134,7 @@ public class database_handler extends SQLiteOpenHelper {
         }
         return days;
     }
-    private int get_year_size_in_days(int year)
+    /*private int get_year_size_in_days(int year)
     {
         if(year%4==0 && year%400!=0 && year%100==0)
         {   return 365;}
@@ -146,7 +142,7 @@ public class database_handler extends SQLiteOpenHelper {
         {   return 366;}
         else
         {   return 365;}
-    }
+    }*/
 
     private String generate_password(int length,boolean c_letter,boolean s_letters,boolean numbers,boolean spl_char)
     {
@@ -196,7 +192,7 @@ public class database_handler extends SQLiteOpenHelper {
         contentValues.put(day,purchase_day);
         contentValues.put(month,purchase_month);
         contentValues.put(year,purchase_year);
-        contentValues.put(days_old,purchase_year*get_year_size_in_days(purchase_year)+get_month_size_in_days(purchase_month,purchase_year)+purchase_day);
+        contentValues.put(days_old,purchase_year*365+get_month_size_in_days(purchase_month,purchase_year)+purchase_day);
         if(for_restore)
         {   contentValues.put(unique_id,unique_id1);}
         else

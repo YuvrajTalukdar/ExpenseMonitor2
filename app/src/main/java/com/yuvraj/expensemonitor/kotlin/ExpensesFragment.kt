@@ -151,7 +151,7 @@ class ExpensesFragment : Fragment() {
         return days
     }
 
-    fun get_year_size_in_days(year: Int): Int
+    /*fun get_year_size_in_days(year: Int): Int
     {
         if(year%4==0 && year%400!=0 && year%100==0)
         {   return 365}
@@ -159,7 +159,7 @@ class ExpensesFragment : Fragment() {
         {   return 366}
         else
         {   return 365}
-    }
+    }*/
 
     fun deleteExpenseData(groupId: Int, childId: Int)
     {
@@ -199,8 +199,8 @@ class ExpensesFragment : Fragment() {
             var no_hit=false
             if(dataHandler.expense_data_list.size>0)
             {
-                while((year*get_year_size_in_days(year)+get_month_size_in_days(month, year)+day)<(
-                            dataHandler.expense_data_list.get(a).year*get_year_size_in_days(dataHandler.expense_data_list.get(a).year)+
+                while((year*365+get_month_size_in_days(month, year)+day)<(
+                            dataHandler.expense_data_list.get(a).year*365+
                                     get_month_size_in_days(dataHandler.expense_data_list.get(a).month, dataHandler.expense_data_list.get(a).year)+
                                     dataHandler.expense_data_list.get(a).day))
                 {

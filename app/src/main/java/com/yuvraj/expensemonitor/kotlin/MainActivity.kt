@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                           add_category_dialog.add_category_listener,
                                           add_expense_dialog.add_expense_listener,
                                           SyncFragment.sync_fragment_listener,
-                                          googleSignInHandler.googleSignInHandler_listener{
+                                          googleSignInHandler.googleSignInHandler_listener,
+                                          ReportFragment.reportFragmentListener{
 
     private lateinit var drawer_layout : DrawerLayout
     private lateinit var fragmentManager: FragmentManager
@@ -393,28 +394,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     //Expense Fragment functions
-    override fun ExpenseDialogOnOKClicked(
-        dialog_code: Int,
-        item_name: String,
-        item_cost: Float,
-        item_category: String,
-        day: Int,
-        month: Int,
-        year: Int
-    )
+    override fun ExpenseDialogOnOKClicked(dialog_code: Int,item_name: String,item_cost: Float,item_category: String,day: Int,month: Int,year: Int)
     {
         var expenseFragment: ExpensesFragment = supportFragmentManager.findFragmentByTag("expense_fragment") as ExpensesFragment
         if(expenseFragment!=null)
         {
             if(dialog_code==0 || dialog_code==1)
-            {   expenseFragment.addExpenseData(
-                item_name,
-                item_cost,
-                item_category,
-                day,
-                month,
-                year
-            )}
+            {   expenseFragment.addExpenseData(item_name,item_cost,item_category,day,month,year)}
         }
     }
 
@@ -443,9 +429,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         theme.resolveAttribute(R.attr.DeepColor, typedValue1, true)
         map.put("DeepColor", ContextCompat.getColor(this, typedValue1.resourceId))
 
-        var typedValue2 =  TypedValue();
+        var typedValue2 =  TypedValue()
         theme.resolveAttribute(R.attr.MediumColor, typedValue2, true)
         map.put("MediumColor", ContextCompat.getColor(this, typedValue2.resourceId))
+
+        var typedValue3 = TypedValue()
+        theme.resolveAttribute(R.attr.backgroundColor,typedValue3,true)
+        map.put("backgroundColor",ContextCompat.getColor(this,typedValue3.resourceId))
+
+        var typedValue4 = TypedValue()
+        theme.resolveAttribute(R.attr.DarkColor,typedValue4,true)
+        map.put("DarkColor",ContextCompat.getColor(this,typedValue4.resourceId))
 
         return map
     }
@@ -522,8 +516,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         else if(id==3)
         {
-            //fragmentManager=supportFragmentManager
-            //fragmentManager.beginTransaction().replace(R.id.container_fragment,ExpensesFragment(),"expense_fragment").commit()
+            fragmentManager=supportFragmentManager
+            var transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.container_fragment,ReportFragment(),"report_fragment").commit()
             supportActionBar?.title = HtmlCompat.fromHtml(
                 "<font color=" + medium_color + ">" + resources.getString(
                     R.string.report_item

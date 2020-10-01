@@ -56,6 +56,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     //REST API
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
     implementation 'com.google.http-client:google-http-client-gson:1.26.0'

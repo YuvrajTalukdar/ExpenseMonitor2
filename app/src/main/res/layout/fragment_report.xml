@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="?android:attr/actionBarSize"
+    android:weightSum="2"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.75"
+        android:weightSum="2">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.75"
+        android:weightSum="2">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/report_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:weightSum="2"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:weightSum="2">
+            <Spinner
+                android:id="@+id/month_spinner"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/textview_style"/>
+            <Spinner
+                android:id="@+id/year_spinner"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/textview_style"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:weightSum="2">
+            <Button
+                android:id="@+id/category_wise_spending"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_style"
+                android:text="@string/category_wise_spending"
+                android:layout_marginEnd="5dp"
+                android:textAllCaps="false" />
+            <Button
+                android:id="@+id/monthly_spending"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:background="@drawable/button_style"
+                android:text="@string/monthly_spending"
+                android:layout_marginStart="5dp"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

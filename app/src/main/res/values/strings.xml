@@ -41,6 +41,9 @@
     <string name="delete_expense_dialog_content">Do you want to delete the item?</string>
     <string name="expense_dialog_title_add">Add Expense..</string>
     <string name="expense_dialog_edit">Edit Expense..</string>
+    <!--report fragment strings-->
+    <string name="category_wise_spending">Category Wise Spending</string>
+    <string name="monthly_spending">Monthly Spending</string>
     <!--Common button text-->
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
