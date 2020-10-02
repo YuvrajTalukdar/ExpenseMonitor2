@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var settings_reader: SharedPreferences;
     private lateinit var settings_editor: SharedPreferences.Editor
     private var current_fragment_code=-1
+    private var about_dialog_code=false
     var is_signed_in = false
     lateinit var drawer_header_imageView: ImageView
     lateinit var drawer_header_text_view: TextView
@@ -476,6 +477,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         else if(item.itemId==R.id.about_item)
         {
+            about_dialog_code=true
             drawer_layout.closeDrawers()
         }
         return true
@@ -549,9 +551,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             current_fragment_code=4
             drawer_layout.closeDrawers()
         }
-        else if(id==5)
+        if(about_dialog_code)
         {
-
+            about_dialog_code=false
+            fragmentManager=supportFragmentManager
+            var about_dialog = aboutDialog()
+            about_dialog.show(fragmentManager,"about_dialog")
         }
     }
 }

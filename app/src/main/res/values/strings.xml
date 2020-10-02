@@ -44,8 +44,18 @@
     <!--report fragment strings-->
     <string name="category_wise_spending">Category Wise Spending</string>
     <string name="monthly_spending">Monthly Spending</string>
+    <!--About dialog strings-->
+    <string name="github_link">https://github.com/YuvrajTalukdar/Password-Generator-And-Manager</string>
+    <string name="about_description">For more information and also help the project:
+        <a href="https://github.com/YuvrajTalukdar/ExpenseMonitor2">https://github.com/YuvrajTalukdar/ExpenseMonitor2</a>
+        \n\nExpense Monitor is a Free as in Freedom software for keeping record of your daily expenses, designed for Android 6.0+.
+        \n\nExpense Monitor is released under the terms of GNU General Public License v3 (GPLv3):
+        <a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>
+        \n\nIcons by Icons8: <a href="https://icons8.com"> https://icons8.com </a>
+        \n\nCharts by  PhilJay\'s MPAndroidChart: <a href="https://github.com/PhilJay/MPAndroidChart">https://github.com/PhilJay/MPAndroidChart</a>
+    </string>
+    <string name="app_version">Version 5.0</string>
     <!--Common button text-->
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
-    <!---->
 </resources>
