@@ -2,6 +2,7 @@
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingTop="?android:attr/actionBarSize"
     android:weightSum="2"
@@ -22,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
