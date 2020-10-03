@@ -193,10 +193,11 @@ class googleSignInHandler(var context1: Context)  {
                                 {
                                     var file = DocumentFile.fromFile(data_file)
                                     var inputStream=context1.contentResolver.openInputStream(file.uri)
-                                    dbHandler.restore_data(inputStream)
-                                    data_file.delete()
-                                    mDriveServiceHelper.delete_backup_file().addOnCompleteListener{
-                                        sync_upload(dbHandler)
+                                    dbHandler.restore_data(inputStream).addOnCompleteListener{
+                                        data_file.delete()
+                                        mDriveServiceHelper.delete_backup_file().addOnCompleteListener{
+                                            sync_upload(dbHandler)
+                                        }
                                     }
                                 }
                             }

@@ -274,6 +274,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun lock_ui(lock: Boolean) {
         syncFragment.lock_ui(lock)
+        if(current_fragment_code==1)
+        {   change_fragment(1)}
     }
 
     override fun backup_restore(start_code: Int) {
@@ -334,13 +336,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var restoreDocumentFile = DocumentFile.fromSingleUri(this,uri)
                 if (restoreDocumentFile != null) {
                     var dbHandler = database_handler(this)
-                    if(!restoreDocumentFile.type.equals("application/octet-stream"))
-                    {   Toast.makeText(this, "Invalid backup file.", Toast.LENGTH_SHORT).show()}
-                    if(!dbHandler.restore_data(contentResolver.openInputStream(restoreDocumentFile.uri)))
-                    {   Toast.makeText(this, "Invalid backup file.", Toast.LENGTH_SHORT).show()}
-                    else
-                    {   Toast.makeText(this, "Data restoration complete.", Toast.LENGTH_SHORT).show()}
-                    dbHandler.close()
+                    //if(!restoreDocumentFile.type.equals("application/octet-stream"))
+                    //{   Toast.makeText(this, "Invalid backup file.", Toast.LENGTH_SHORT).show()}
+                    dbHandler.restore_data(contentResolver.openInputStream(restoreDocumentFile.uri)).addOnCompleteListener{
+                        if(it.result==false)
+                        {   Toast.makeText(this, "Invalid backup file.", Toast.LENGTH_SHORT).show()}
+                        else if(it.result==true)
+                        {   Toast.makeText(this, "Data restoration complete.", Toast.LENGTH_SHORT).show()}
+                        dbHandler.close()
+                    }
                 }
             }
         }

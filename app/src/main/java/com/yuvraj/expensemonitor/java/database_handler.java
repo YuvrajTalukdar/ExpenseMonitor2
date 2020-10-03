@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,6 +18,8 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class database_handler extends SQLiteOpenHelper {
 
@@ -319,63 +324,71 @@ public class database_handler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean restore_data(InputStream in)//ok tested
+    public Task<Boolean> restore_data(InputStream in)
     {
-        try{
-            String line="";
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            if(in != null)
-            {
-                int spending_id=-1,purchase_day=-1,purchase_month=-1,purchase_year=-1;
-                float item_cost=0.0F;
-                String item_name="",item_category="",unique_id1="",temp="";
-                int col_id=0,row_id=0;
-                while((line = reader.readLine()) != null)
+        Executor mExecutor = Executors.newSingleThreadExecutor();
+        return Tasks.call(mExecutor, () -> {
+            try{
+                String line="";
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                if(in != null)
                 {
-                    //System.out.println("line= "+line);
-                    if(row_id==0)
-                    {   row_id++;continue;}
-                    temp="";
-                    col_id=0;
-                    for(int a=0;a<line.length();a++)
+                    int spending_id=-1,purchase_day=-1,purchase_month=-1,purchase_year=-1;
+                    float item_cost=0.0F;
+                    String item_name="",item_category="",unique_id1="",temp="";
+                    int col_id=0,row_id=0;
+                    while((line = reader.readLine()) != null)
                     {
-                        if(line.charAt(a)==','||a==line.length()-1)
+                        //System.out.println("line= "+line);
+                        if(row_id==0)//for skipping the first line
+                        {   row_id++;continue;}
+                        temp="";
+                        col_id=0;
+                        for(int a=0;a<line.length();a++)
                         {
-                            if(a==line.length()-1)
+                            if(line.charAt(a)==','||a==line.length()-1)
+                            {
+                                if(a==line.length()-1)
+                                {   temp+=line.charAt(a);}
+                                if(col_id==0)
+                                {   spending_id=Integer.parseInt(temp);}
+                                else if(col_id==1)
+                                {   item_name=temp;}
+                                else if(col_id==2)
+                                {   item_cost=Float.parseFloat(temp);}
+                                else if(col_id==3)
+                                {   item_category=temp;}
+                                else if(col_id==4)
+                                {   purchase_day=Integer.parseInt(temp);}
+                                else if(col_id==5)
+                                {   purchase_month=Integer.parseInt(temp);}
+                                else if(col_id==6)
+                                {   purchase_year=Integer.parseInt(temp);}
+                                else if(col_id==7)
+                                {   unique_id1=temp;}
+                                temp="";
+                                col_id++;
+                            }
+                            else
                             {   temp+=line.charAt(a);}
-                            if(col_id==0)
-                            {   spending_id=Integer.parseInt(temp);}
-                            else if(col_id==1)
-                            {   item_name=temp;}
-                            else if(col_id==2)
-                            {   item_cost=Float.parseFloat(temp);}
-                            else if(col_id==3)
-                            {   item_category=temp;}
-                            else if(col_id==4)
-                            {   purchase_day=Integer.parseInt(temp);}
-                            else if(col_id==5)
-                            {   purchase_month=Integer.parseInt(temp);}
-                            else if(col_id==6)
-                            {   purchase_year=Integer.parseInt(temp);}
-                            else if(col_id==7)
-                            {   unique_id1=temp;}
-                            temp="";
-                            col_id++;
                         }
+                        if(col_id==8)
+                        {   safety_check_and_add_data(true,unique_id1,item_name,item_cost,item_category,purchase_day,purchase_month,purchase_year);}
                         else
-                        {   temp+=line.charAt(a);}
+                        {   throw new Exception("Invalid backup file.");}
+                        row_id++;
                     }
-                    if(col_id==8)
-                    {   safety_check_and_add_data(true,unique_id1,item_name,item_cost,item_category,purchase_day,purchase_month,purchase_year);}
-                    else
-                    {   throw new Exception("Invalid backup file.");}
+                    if(row_id==1)
+                    {   throw new Exception("No data present.");}
                 }
+                reader.close();
+                in.close();
+                return true;
             }
-            reader.close();
-            in.close();
-        }
-        catch(Exception e)
-        {   e.printStackTrace();return false;}
-        return true;
+            catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        });
     }
 }

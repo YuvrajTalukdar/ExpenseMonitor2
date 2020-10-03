@@ -164,7 +164,8 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
             {   month_wise_expense.add(month_data)}
             a++
         }
-        month_wise_expense.removeAt(0)//because the data at index 0 is dummy.
+        if(month_wise_expense.size>0)
+        {   month_wise_expense.removeAt(0)}//because the data at index 0 is dummy.
 
         var yearSpinnerAdapter = ArrayAdapter(
             requireContext(),
@@ -206,7 +207,8 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
             mode_changing_data.index=-1
             mode_changing_data.category_mode=false
             recyclerViewAdapter.notifyDataSetChanged()
-            addLineChartData()
+            if(month_wise_expense.size>0)
+            {   addLineChartData()}
         }
         month_spinner.setSelection(month - 1)
         a=0
@@ -258,7 +260,6 @@ class ReportFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         return view
     }
-
 
     private fun addLineChartData()
     {
