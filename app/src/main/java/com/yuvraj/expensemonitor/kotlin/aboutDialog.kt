@@ -19,7 +19,7 @@ class aboutDialog: DialogFragment(){
             builder.setView(view)
 
             var imageView: ImageView = view.findViewById(R.id.appIconImageView)
-            Glide.with(this).load(R.drawable.drawer_header_background).into(imageView)
+            Glide.with(this).load(R.drawable.app_icon).into(imageView)
 
             var button: Button = view.findViewById(R.id.about_ok_button)
             button.setOnClickListener{
