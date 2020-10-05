@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.content.Context
 import android.content.Intent
@@ -19,9 +19,9 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.google.api.services.drive.model.File
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.DriveServiceHelper
-import com.yuvraj.expensemonitor2.java.database_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.DriveServiceHelper
+import com.yuvraj.expensemonitor.java.database_handler
 import java.io.IOException
 import java.net.InetSocketAddress
 import java.net.Socket

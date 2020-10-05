@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -9,8 +9,8 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.database_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.database_handler
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList

@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.yuvraj.expensemonitor2.R
+import com.yuvraj.expensemonitor.R
 
 class SyncFragment(var sign_in_handler: googleSignInHandler) : Fragment() {
 

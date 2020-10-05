@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.BaseExpandableListAdapter
 import android.widget.ImageButton
 import android.widget.TextView
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.data_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.data_handler
 
 class expense_ExpandableListView_adapter(context1: Context, dataHandler1: data_handler, listener1: expense_list_adapter_listener): BaseExpandableListAdapter() {
 

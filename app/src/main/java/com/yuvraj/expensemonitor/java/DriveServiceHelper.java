@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.java;
+package com.yuvraj.expensemonitor.java;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;

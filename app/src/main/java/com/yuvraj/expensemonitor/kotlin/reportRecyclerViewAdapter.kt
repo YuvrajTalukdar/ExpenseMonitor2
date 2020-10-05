@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.yuvraj.expensemonitor2.R
+import com.yuvraj.expensemonitor.R
 import java.util.HashMap
 
 class reportRecyclerViewAdapter(var map: HashMap<String,Int>, var month_wise_data: ArrayList<ReportFragment.data_month_wise>, var mode_changing_data: ReportFragment.mode_changing_data_class): RecyclerView.Adapter<reportRecyclerViewAdapter.data_holder>(){

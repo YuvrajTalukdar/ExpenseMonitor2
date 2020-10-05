@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.content.Context
 import android.content.Intent
@@ -27,8 +27,8 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.navigation.NavigationView
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.database_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.database_handler
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,

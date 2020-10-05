@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import android.widget.*
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.data_handler
-import com.yuvraj.expensemonitor2.java.database_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.data_handler
+import com.yuvraj.expensemonitor.java.database_handler
 
 class ExpensesFragment : Fragment() {
 

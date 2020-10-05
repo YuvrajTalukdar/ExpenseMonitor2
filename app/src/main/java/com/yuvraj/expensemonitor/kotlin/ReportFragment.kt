@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.graphics.Color
 import android.os.Bundle
@@ -17,9 +17,9 @@ import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.data_handler
-import com.yuvraj.expensemonitor2.java.database_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.data_handler
+import com.yuvraj.expensemonitor.java.database_handler
 import kotlinx.android.synthetic.main.fragment_report.*
 import java.util.*
 import kotlin.collections.ArrayList

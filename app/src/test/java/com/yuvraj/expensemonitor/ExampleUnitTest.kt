@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2
+package com.yuvraj.expensemonitor
 
 import org.junit.Test
 

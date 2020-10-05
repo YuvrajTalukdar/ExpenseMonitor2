@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2
+package com.yuvraj.expensemonitor
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

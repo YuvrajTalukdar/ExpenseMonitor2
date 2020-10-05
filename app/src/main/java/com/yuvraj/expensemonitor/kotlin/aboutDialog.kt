@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
-import com.yuvraj.expensemonitor2.R
+import com.yuvraj.expensemonitor.R
 
 class aboutDialog: DialogFragment(){
 

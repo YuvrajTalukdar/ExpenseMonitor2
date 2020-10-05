@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
-import com.yuvraj.expensemonitor2.R
+import com.yuvraj.expensemonitor.R
 
 class add_category_dialog() : DialogFragment() {
 

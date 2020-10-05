@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.kotlin
+package com.yuvraj.expensemonitor.kotlin
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.yuvraj.expensemonitor2.R
-import com.yuvraj.expensemonitor2.java.data_handler
+import com.yuvraj.expensemonitor.R
+import com.yuvraj.expensemonitor.java.data_handler
 
 class category_list_recycler_view_adapter(dataHandler1: data_handler,listener1: category_list_adapter_listener): RecyclerView.Adapter<category_list_recycler_view_adapter.data_holder>(){
 

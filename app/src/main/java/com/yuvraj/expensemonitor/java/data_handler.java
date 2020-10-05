@@ -1,4 +1,4 @@
-package com.yuvraj.expensemonitor2.java;
+package com.yuvraj.expensemonitor.java;
 
 import java.util.ArrayList;
 
