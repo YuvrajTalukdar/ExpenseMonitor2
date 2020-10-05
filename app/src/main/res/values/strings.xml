@@ -54,7 +54,7 @@
         \n\nIcons by Icons8: <a href="https://icons8.com"> https://icons8.com </a>
         \n\nCharts by  PhilJay\'s MPAndroidChart: <a href="https://github.com/PhilJay/MPAndroidChart">https://github.com/PhilJay/MPAndroidChart</a>
     </string>
-    <string name="app_version">Version 5.0</string>
+    <string name="app_version">Version 1.0</string>
     <!--Common button text-->
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
